@@ -17,17 +17,53 @@
     height: 100%;
 }
 
+.home-content {
+    position: relative;
+    z-index:10;
+    padding: 0 4rem 5rem;
+    max-width: 860px;
+}
+
+/*Styling for the my name on the home page*/
 .home-title {
+    font-family: var(--serif);
     font-size: clamp(3rem, 7vw, 6rem);
     font-weight: 300;
     line-height: 1;
-    letter-spacing: -.02em;
+    letter-spacing: -.018em;
     margin-bottom: 6rem;
 }
 
+.home-title em {
+    color: var(--biolum);
+    font-weight: 600;
+}
+
+/*Styling for the job description subtitle*/
 .home-subtitle {
     font-size: clamp(1rem, 2vw, 1.4rem);
     font-weight: 300;
     font-style:italic;
+    color: var(--lichen);
     margin-bottom: 1.6rem;
+}
+
+
+/*Styling for the intro paragraph*/
+.intro-paragraph {
+    color: var(--fog);
+    max-width: 540px;
+    line-height: 1.75;
+    margin-bottom: 1.8rem;
+    
+}
+
+/*Portfolio navigation buttons that scroll to corresponding section of page*/
+.portfolio-nav {
+    display: flex;
+    font-size: .7 rem;
+    letter-spacing: .14em;
+    color: var(--sage);
+    text-transform: uppercase;
+
 }
