@@ -1,0 +1,23 @@
+
+/* Night-Vale-themed purple and black with a forest background color scheme*/
+:root {
+    --bark:       #0e0c10;
+    --bark2:      #16121c;
+    --bark3:      #211a2e;
+    --moss:       #1e2e1c;
+    --violet:     #1a1428;
+    --lightblue-1:#3d4a5c;
+    --lightblue-2:#6b8fa8;
+    --lichen:     #9ec4a8;
+    --biolum:     #7effc4;
+    --lightpurple:#b07fff;
+    --glow-gold:  #f0c060;
+    --spore:      #c8ff6e;
+    --gold:       #e8a030;
+    --fog:        #b8b4c8;
+    --parchment:  #e8e0f0;
+    --serif:      'Cormorant Garamond', Georgia, serif;
+    --body:       'Lora', Georgia, serif;
+    --mono:       'DM Mono', monospace;
+}
+
