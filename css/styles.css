@@ -10,8 +10,8 @@
     --bark3:      #211a2e;
     --moss:       #1e2e1c;
     --violet:     #1a1428;
-    --lightblue-1:#3d4a5c;
-    --lightblue-2:#6b8fa8;
+    --lightblue1: #3d4a5c;
+    --lightblue2: #6b8fa8;
     --lichen:     #9ec4a8;
     --biolum:     #7effc4;
     --lightpurple:#b07fff;
@@ -26,11 +26,28 @@
 }
 
 
-/* Grain bg overlay */
-
+/* Grain bg overlay from AI*/
+body::before {
+    content: '';
+    position: fixed;       /* Stays in place during scroll */
+    inset: 0;              /* Covers full viewport: top/right/bottom/left all = 0 */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: .05;
+    pointer-events: none;  /* Does not intercept mouse clicks */
+    z-index: 1000;         /* Sits above all content (but pointer-events:none makes it invisible to interaction) */
+}
 
 /* Base css styles for body: dark purple bg, light purple Lora font*/
-
+body {
+    background: var(--bark);
+    color: var(--parchment);
+    font-family: var(--body);
+    font-size: 1rem;
+    line-height: 1.8;
+  /* Prevents svg element overflow scroll*/
+    overflow-x: hidden;
+    cursor: crosshair;
+}
 
 /* Moving Banner css */
 
