@@ -1,3 +1,7 @@
+/* Imports other css files so the main styles.css files calls in all css styles; simplifies css that has to be called in across the website while keeping stylesheets neat */
+@import "homeBanner.css";
+@import "scrollPrompt.css";
+@import "contactBoxes.css";
 
 /* Night-Vale-themed purple and black with a forest background color scheme*/
 :root {
@@ -30,16 +34,11 @@
 
 /* Moving Banner css */
 
-/* Hero/home banner */
-
-/* Scroll prompt */
-
 /* Page divider */
 
 /* Standard Section Wrapper */
 
 /* Mobile Compatibility/Responsive/Dynamic Design */
 
-/* Contact boxes */
 
 /* Page footer */
