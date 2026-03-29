@@ -29,7 +29,14 @@
 
     /* Section title styling */
     .section-title{
-        
+        font-family: var(--serif);
+        font-size: clamp(1.9rem, 4vw, 3rem);
+        font-weight: 300;
+        letter-spacing: -.015em;
+        margin-bottom: 1.2rem;
+    }
+    .section-title em{
+        color: var(--lichen)
     }
 /*End of overall styling; the comment in VSCode are being weird about me trying to close this section*/
 
@@ -38,6 +45,37 @@
 
 
 /* Work list styling*/
+
+
+/* About section */
+/* Quote box */
+.quote {
+    position: relative;
+    margin: 2.5rem 0;
+    padding: 1.8rem 2rem 1.8rem 2.8rem;
+    border-left: 2px solid var(--violet);
+    background: linear-gradient(135deg, var(--bark2), var(--bark3));
+}
+
+/* Quote icon */
+.quote::before {
+    content: '"';
+    position: absolute; top: -.4rem; left: 1rem;
+    font-family: var(--serif); font-size: 4.5rem; line-height: 1;
+    color: var(--lightpurple); opacity: .35;
+}
+.quote p {
+    font-family: var(--serif); font-size: 1.25rem;
+    font-style: italic; font-weight: 300; line-height: 1.5;
+    margin: 0;
+}
+.quote cite {
+    display: block; font-family: var(--mono); font-size: .62rem;
+    font-style: normal; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--lightpurple); margin-top: .7rem;
+}
+
+
 
 
 /*Mobile Responsiveness*/
