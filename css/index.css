@@ -1,0 +1,48 @@
+/* Overall section styling */
+    .section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 4rem;
+    }
+
+    /* Section mini-title styling */
+    .section-mini-title {
+        font-family: var(--mono);
+        font-size: .8rem;
+        letter-spacing: .13em;
+        color: var(--biolum);
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: .8rem
+    }
+    /* Section mini-title dot styling */
+    .section-mini-title .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--biolum);
+        box-shadow: 0 0 8px var(--biolum), 0 0 16px var(--biolum);
+        flex-shrink: 0;
+    }
+
+    /* Section title styling */
+    .section-title{
+        
+    }
+/*End of overall styling; the comment in VSCode are being weird about me trying to close this section*/
+
+
+/*Works section*/
+
+
+/* Work list styling*/
+
+
+/*Mobile Responsiveness*/
+@media (max-width: 700px) {
+   .section {
+    padding: 3rem 1.5rem
+   } 
+}

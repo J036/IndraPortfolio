@@ -61,9 +61,32 @@
 /*Portfolio navigation buttons that scroll to corresponding section of page*/
 .portfolio-nav {
     display: flex;
+    gap: 1.5rem;
     font-size: .7 rem;
     letter-spacing: .14em;
-    color: var(--sage);
     text-transform: uppercase;
+}
 
+.portfolio-nav a {
+    font-family: (--mono);
+    color: var(--lightblue2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--lightblue1);
+    padding-bottom: .15rem;
+}
+
+.portfolio-nav a:hover {
+    color: var(--biolum);
+    border-color: var(--biolum);
+}
+
+
+/*Mobile Responsiveness*/
+@media (max-width: 700px) {
+   .home-content {
+        padding: 0 1.5rem 4rem;
+   }
+   .home-title {
+        font-size: clamp(2.4rem, 10vw, 3.5rem);
+   }
 }
