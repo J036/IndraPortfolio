@@ -44,7 +44,7 @@ body {
     font-family: var(--body);
     font-size: 1rem;
     line-height: 1.8;
-  /* Prevents svg element overflow scroll*/
+ /* Prevents svg element overflow scroll*/
     overflow-x: hidden;
     cursor: crosshair;
 }

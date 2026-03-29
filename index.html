@@ -22,34 +22,249 @@
     <!--Link to Google Fonts for different styles of the Cormorant Garmond, DM Mono, and Lora fonts-->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <!--Calls in cumulative style sheet-->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-<div>
-    Medill School of Journalism, Northwestern University
+<!--SVG section generated AI after multiple unsuccessful attempts using my previous attempts and css-->
+<svg class="canopy-svg"
+    viewBox="0 0 1440 900"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid slice"
+    role="img"
+    aria-label="Illustration of a dark forest at night with purple and black sky, bioluminescent glows on the forest floor, and firefly lights. Inspired by Welcome to Night Vale, a fiction podcast about a radio host.">
+    <defs>
+        <!-- Night Vale sky: deep purple-black radial gradient, darker than the original forest palette -->
+        <radialGradient id="sky" cx="50%" cy="18%" r="70%">
+        <stop offset="0%"   stop-color="#14082a"/> <!-- Deep violet at the zenith -->
+        <stop offset="50%"  stop-color="#0a0512"/> <!-- Near-black mid-sky -->
+        <stop offset="100%" stop-color="#050309"/> <!-- Pure void at the edges -->
+        </radialGradient>
+
+        <!-- Moon glow: pale lavender aura behind the implied moon position -->
+        <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#d4c0ff" stop-opacity=".2"/> <!-- Soft lavender -->
+        <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+
+        <!-- Bioluminescent floor glow: bright cyan for mushroom clusters -->
+        <radialGradient id="biolumGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#7effc4" stop-opacity=".4"/>
+        <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+
+        <!-- Glow Cloud gradient: the iconic Night Vale Glow Cloud in amber/gold -->
+        <radialGradient id="glowCloud" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#f0c060" stop-opacity=".25"/> <!-- Gold centre -->
+        <stop offset="60%"  stop-color="#c080e0" stop-opacity=".12"/> <!-- Purple mid -->
+        <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+
+        <!-- Blur filters at different radii for atmospheric effects -->
+        <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
+        <filter id="blur12"><feGaussianBlur stdDeviation="12"/></filter>
+        <filter id="blur20"><feGaussianBlur stdDeviation="20"/></filter>
+
+        <!-- Glow filter: creates a luminous halo by blending a blurred copy behind the original -->
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+
+        <!-- Violet glow: same as glow but tuned for the purple Night Vale accent elements -->
+        <filter id="glow-violet">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+    </defs>
+
+    <!-- Base sky rectangle — fills canvas with the Night Vale purple-black gradient -->
+    <rect width="1440" height="900" fill="url(#sky)"/>
+
+    <!-- GLOW CLOUD — the iconic Welcome to Night Vale phenomenon.
+         Rendered as a large, heavily-blurred amber-purple ellipse in the upper sky. -->
+    <ellipse cx="820" cy="140" rx="280" ry="120" fill="url(#glowCloud)" filter="url(#blur20)"/>
+    <!-- Inner cloud core: slightly brighter gold -->
+    <ellipse cx="820" cy="130" rx="140" ry="60" fill="#f0c060" opacity=".06" filter="url(#blur12)"/>
+
+    <!-- Stars: varied sizes and opacities create a natural Night Vale starfield.
+         Some are cyan-tinted (biolum), others are violet-tinted (Night Vale purple). -->
+    <g opacity=".7">
+      <circle cx="80"  cy="55"  r="1"   fill="#d4c0ff" opacity=".7"/> <!-- Violet-tinted star -->
+      <circle cx="180" cy="30"  r="1.3" fill="#fff"    opacity=".6"/>
+      <circle cx="300" cy="75"  r=".8"  fill="#fff"/>
+      <circle cx="420" cy="42"  r="1.1" fill="#c8ffd4" opacity=".8"/> <!-- Cyan star near Glow Cloud -->
+      <circle cx="560" cy="22"  r="1.4" fill="#d4c0ff" opacity=".9"/>
+      <circle cx="680" cy="65"  r=".9"  fill="#fff"    opacity=".5"/>
+      <circle cx="760" cy="18"  r="1.2" fill="#c8ffd4" opacity=".7"/>
+      <circle cx="940" cy="50"  r="1"   fill="#fff"    opacity=".6"/>
+      <circle cx="1060" cy="35" r="1.3" fill="#d4c0ff" opacity=".8"/>
+      <circle cx="1200" cy="60" r=".9"  fill="#fff"/>
+      <circle cx="1350" cy="28" r="1.1" fill="#c8ffd4" opacity=".7"/>
+      <!-- Second row: dimmer, lower stars -->
+      <circle cx="150"  cy="110" r=".7" fill="#fff" opacity=".3"/>
+      <circle cx="380"  cy="95"  r="1"  fill="#d4c0ff" opacity=".4"/>
+      <circle cx="620"  cy="105" r=".8" fill="#fff" opacity=".35"/>
+      <circle cx="900"  cy="88"  r="1"  fill="#fff" opacity=".4"/>
+      <circle cx="1150" cy="100" r=".9" fill="#d4c0ff" opacity=".3"/>
+    </g>
+
+    <!-- MOON: gentle lavender glow in the upper-left quadrant -->
+    <ellipse cx="250" cy="110" rx="180" ry="150" fill="url(#moonGlow)" filter="url(#blur12)"/>
+    <circle  cx="250" cy="78"  r="22" fill="#e0d4ff" opacity=".06" filter="url(#blur4)"/>
+    <circle  cx="250" cy="78"  r="10" fill="#f0eaff" opacity=".1"/>
+
+    <!-- BACKGROUND TREES — deepest layer, smallest silhouettes, darkest purple-green fill -->
+    <g fill="#0c0a12" opacity=".95">
+      <!-- Far left -->
+      <polygon points="0,900 0,380 45,270 90,380 90,900"/>
+      <polygon points="55,900 55,430 80,355 105,430 105,900"/>
+      <polygon points="120,900 120,310 170,185 220,310 220,900"/>
+      <polygon points="185,900 185,400 210,325 235,400 235,900"/>
+      <!-- Centre-left -->
+      <polygon points="270,900 270,290 325,155 380,290 380,900"/>
+      <polygon points="340,900 340,370 368,295 395,370 395,900"/>
+      <polygon points="450,900 450,265 510,120 570,265 570,900"/>
+      <polygon points="525,900 525,335 555,255 585,335 585,900"/>
+      <!-- Centre -->
+      <polygon points="620,900 620,305 675,170 730,305 730,900"/>
+      <polygon points="700,900 700,385 728,308 756,385 756,900"/>
+      <!-- Centre-right -->
+      <polygon points="790,900 790,295 840,168 890,295 890,900"/>
+      <polygon points="858,900 858,375 883,298 908,375 908,900"/>
+      <!-- Right -->
+      <polygon points="940,900 940,320 990,195 1040,320 1040,900"/>
+      <polygon points="1055,900 1055,390 1082,312 1109,390 1109,900"/>
+      <polygon points="1130,900 1130,350 1175,225 1220,350 1220,900"/>
+      <polygon points="1240,900 1240,315 1285,192 1330,315 1330,900"/>
+      <polygon points="1355,900 1355,380 1385,305 1415,380 1415,900"/>
+      <polygon points="1400,900 1400,425 1420,358 1440,425 1440,900"/>
+    </g>
+
+    <!-- MIDGROUND TREES — slightly closer, darker fill, taller silhouettes -->
+    <g fill="#090810">
+      <polygon points="-10,900 -10,510 38,390 86,510 86,900"/>
+      <polygon points="100,900 100,490 145,372 190,490 190,900"/>
+      <polygon points="248,900 248,460 298,332 348,460 348,900"/>
+      <polygon points="420,900 420,480 468,355 516,480 516,900"/>
+      <polygon points="595,900 595,470 642,347 689,470 689,900"/>
+      <polygon points="748,900 748,500 795,378 842,500 842,900"/>
+      <polygon points="888,900 888,470 935,348 982,470 982,900"/>
+      <polygon points="1062,900 1062,490 1105,370 1148,490 1148,900"/>
+      <polygon points="1228,900 1228,460 1274,332 1320,460 1320,900"/>
+      <polygon points="1368,900 1368,520 1395,428 1422,520 1422,900"/>
+    </g>
+
+    <!-- FOREGROUND TREES — closest layer, near-black, widest silhouettes -->
+    <g fill="#050408">
+      <polygon points="-25,900 -25,590 38,442 101,590 101,900"/>
+      <polygon points="78,900 78,615 128,478 178,615 178,900"/>
+      <polygon points="212,900 212,560 278,415 344,560 344,900"/>
+      <polygon points="568,900 568,572 632,420 696,572 696,900"/>
+      <polygon points="842,900 842,555 905,408 968,555 968,900"/>
+      <polygon points="1085,900 1085,572 1148,420 1211,572 1211,900"/>
+      <polygon points="1318,900 1318,582 1375,444 1432,582 1432,900"/>
+    </g>
+
+    <!-- FOREST FLOOR -->
+    <rect x="0" y="828" width="1440" height="72" fill="#040306"/>
+    <ellipse cx="720" cy="865" rx="820" ry="55" fill="#030205"/>
+
+    <!-- BIOLUMINESCENT MUSHROOM GLOWS — softly blurred floor-level cyan patches -->
+    <ellipse cx="165"  cy="845" rx="28" ry="11" fill="#7effc4" opacity=".09" filter="url(#blur4)"/>
+    <ellipse cx="400"  cy="860" rx="20" ry="8"  fill="#7effc4" opacity=".13" filter="url(#blur4)"/>
+    <ellipse cx="740"  cy="848" rx="32" ry="13" fill="#7effc4" opacity=".08" filter="url(#blur4)"/>
+    <ellipse cx="1030" cy="840" rx="24" ry="10" fill="#b07fff" opacity=".09" filter="url(#blur4)"/> <!-- Violet variant -->
+    <ellipse cx="1268" cy="855" rx="20" ry="8"  fill="#7effc4" opacity=".1"  filter="url(#blur4)"/>
+
+    <!-- NIGHT VALE SIGILS — faint floating geometric shapes.
+         These are stylized octahedrons/triangles referencing WTNV's visual language.
+         Very low opacity so they're subliminal, not distracting. -->
+    <g filter="url(#glow-violet)" opacity=".18">
+      <polygon points="320,420 335,448 305,448" fill="none" stroke="#b07fff" stroke-width=".8"/>
+      <polygon points="1100,380 1118,412 1082,412" fill="none" stroke="#b07fff" stroke-width=".8"/>
+      <polygon points="580,320 594,346 566,346" fill="none" stroke="#7effc4" stroke-width=".8"/>
+    </g>
+
+    <!-- FIREFLIES — animated bioluminescent points with staggered blink cycles.
+         The glow filter gives each firefly a luminous halo. -->
+    <g filter="url(#glow)" opacity=".75">
+      <circle cx="310"  cy="605" r="2"   fill="#7effc4">
+        <animate attributeName="opacity" values="0;1;0" dur="3.2s" repeatCount="indefinite" begin="0s"/>
+      </circle>
+      <circle cx="575"  cy="545" r="1.5" fill="#b07fff"> <!-- Violet firefly — Night Vale variant -->
+        <animate attributeName="opacity" values="0;1;0" dur="2.8s" repeatCount="indefinite" begin="1.1s"/>
+      </circle>
+      <circle cx="835"  cy="625" r="2"   fill="#7effc4">
+        <animate attributeName="opacity" values="0;1;0" dur="3.6s" repeatCount="indefinite" begin=".6s"/>
+      </circle>
+      <circle cx="1090" cy="575" r="1.8" fill="#7effc4">
+        <animate attributeName="opacity" values="0;1;0" dur="4s"   repeatCount="indefinite" begin="1.8s"/>
+      </circle>
+      <circle cx="195"  cy="685" r="1.5" fill="#c8ff6e">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="2.2s"/>
+      </circle>
+      <circle cx="1295" cy="655" r="2"   fill="#b07fff">
+        <animate attributeName="opacity" values="0;1;0" dur="3s"   repeatCount="indefinite" begin=".9s"/>
+      </circle>
+      <circle cx="695"  cy="505" r="1.2" fill="#7effc4">
+        <animate attributeName="opacity" values="0;1;0" dur="5s"   repeatCount="indefinite" begin="3s"/>
+      </circle>
+      <circle cx="955"  cy="495" r="1.5" fill="#c8ff6e">
+        <animate attributeName="opacity" values="0;1;0" dur="3.8s" repeatCount="indefinite" begin="1.5s"/>
+      </circle>
+    </g>
+
+    <!-- MIST — ground-hugging fog layer at the forest floor -->
+    <rect x="0" y="788" width="1440" height="115" fill="url(#sky)" opacity=".45" filter="url(#blur12)"/>
+
+    <!-- VIGNETTE EDGES — darken the left, right, and bottom edges to focus on centre -->
+    <defs>
+      <linearGradient id="vigL" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0%"  stop-color="#030205" stop-opacity=".9"/>
+        <stop offset="30%" stop-color="transparent"/>
+      </linearGradient>
+      <linearGradient id="vigR" x1="1" x2="0" y1="0" y2="0">
+        <stop offset="0%"  stop-color="#030205" stop-opacity=".9"/>
+        <stop offset="30%" stop-color="transparent"/>
+      </linearGradient>
+      <linearGradient id="vigB" x1="0" x2="0" y1="1" y2="0">
+        <stop offset="0%"  stop-color="#030205" stop-opacity=".98"/>
+        <stop offset="45%" stop-color="transparent"/>
+      </linearGradient>
+    </defs>
+    <rect width="420" height="900" fill="url(#vigL)"/>
+    <rect x="1020" width="420" height="900" fill="url(#vigR)"/>
+    <rect y="570" width="1440" height="330" fill="url(#vigB)"/>
+
+  </svg>
+
+
+<div class="home-content">
+    <div>
+        Medill School of Journalism, Northwestern University
+    </div>
+
+    <h1 class="home-title">Jai<em>Indra</em></h1>
+
+    <div class="home-subtitle">
+        Investigative data journalist and community-based researcher at Northwestern University.
+    </div>
+
+    <p>
+        Covering environmental justice, education, and public health quity through investigative reporting, GIS mapping, and community-based research.
+        Indigenous STEAM & Northwestern Class of 2027. Previous Medill Investigative Lab & KnightLab Member.
+    </p>
+
+
+    <div>
+        <a href="#work">Work</a>
+        <a href="#story">Story</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>    
 </div>
-
-<h1 class="home-title">Jai<em>Indra</em></h1>
-
-<div class="home-subtitle">
-    Investigative data journalist and community-based researcher at Northwestern University.
-</div>
-
-<p>
-    Covering environmental justice, education, and public health quity through investigative reporting, GIS mapping, and community-based research.
-    Indigenous STEAM & Northwestern Class of 2027. Previous Medill Investigative Lab & KnightLab Member.
-</p>
-
-
-<div>
-    <a href="#work">Work</a>
-    <a href="#story">Story</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-</div>    
-
 </body>
 </html>
 

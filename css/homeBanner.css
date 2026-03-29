@@ -9,6 +9,7 @@
     overflow: hidden;
 }
 
+/* SVG element illustation fills whole banner/hero as an absolute element */
 .forrest-svg {
     position: absolute;
     inset: 0;
