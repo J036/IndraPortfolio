@@ -1,0 +1,56 @@
+.ai-note {
+    background: var(--bark2);
+    border: 1px solid var(--bark3);
+    border-left: 3px solid var(--lightpurple);
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+    font-family: var(--mono);
+    font-size: .8rem;
+    color: var(--lightblue2);
+    line-height: 1.6;
+}
+.ai-note strong {
+    color: var(--parchment);
+    display: block;
+    margin-bottom: .3rem;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: var(--serif);
+    font-size: 4rem;
+    float: left;
+    line-height: .8;
+    background: var(--bark3);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1 rem;
+}
+
+.contact-cell {
+    background: var(--bark2); padding: 1.5rem;
+    text-decoration: none; color: inherit;
+    transition: background .25s; display: block;
+}
+.contact-cell:hover { 
+    background: var(--canopy);
+}
+.contact-label {
+    font-family: var(--mono); font-size: .6rem;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: .45rem;
+}
+.contact-value {
+    font-family: var(--serif); font-size: 1.1rem;
+    color: var(--lichen); transition: color .25s;
+}
+.contact-cell:hover .contact-value { 
+    color: var(--biolum);
+}
+
+@media (max-width: 560px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}

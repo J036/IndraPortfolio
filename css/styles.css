@@ -2,9 +2,10 @@
 @import "homeBanner.css";
 @import "scrollPrompt.css";
 @import "contactBoxes.css";
-@import "index.css";
+@import "indexsection.css";
 @import "work.css";
 @import "about.css";
+@import "contact.css";
 
 /* Night-Vale-themed purple and black with a forest background color scheme*/
 :root {
