@@ -18,6 +18,38 @@
     }
 }
 
+.about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--bark3);
+    border: 1px solid var(--bark3);
+}
+
+.stat-cell {
+    background: var(--bark2);
+    padding: 1.3rem;
+    transition: background .25s;
+}
+.stat-cell:hover { background: var(--canopy); }
+.stat-num {
+    font-family: var(--serif); font-size: 2.4rem; font-weight: 600;
+    line-height: 1; color: var(--biolum);
+    text-shadow: 0 0 20px rgba(126,255,196,.35);
+    margin-bottom: .25rem;
+}
+.stat-num.purple { color: var(--lightpurple); text-shadow: 0 0 20px rgba(176,127,255,.35); }
+.stat-num.gold   { color: var(--glow-gold); text-shadow: 0 0 20px rgba(240,192,96,.35); }
+.stat-label {
+    font-family: var(--mono); font-size: .62rem;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--sage); line-height: 1.4;
+}
+
+
+
+
+
 
 /* Quote box */
 .quote {
