@@ -584,7 +584,7 @@ input[type=range] { flex: 1; accent-color: var(--lightpurple); height: 3px; }
     <div class="section-label">The Gap</div>
     <h2>A 14% progress rate with 9 years left</h2>
     <p>When Chicago released its 2022 Climate Action Plan, the city committed to enabling <strong>2,500 new public passenger EV charging stations by 2035</strong>. At the time, the Inflation Reduction Act was about to pass, electric vehicle adoption was accelerating nationally, and the goal seemed ambitious but achievable.</p>
-    <p>As of March 27, 2026, the city has <strong>350 publicly available electric charging locations</strong>, counting every Level 1, Level 2, and DC Fast Charger on the AFDC database. That is 14% of the target, with roughly 9 years remaining.</p>
+    <p>As of March 27, 2026, the city has <strong>350 publicly available electric charging locations</strong>, counting every Level 1, Level 2, and DC Fast Charger on the Chicago Data Portal database. That is 14% of the target, with roughly 9 years remaining.</p>
     <div class="progress-section">
       <div class="progress-label-row">
         <span>Progress toward 2,500-station goal</span>
@@ -605,12 +605,12 @@ input[type=range] { flex: 1; accent-color: var(--lightpurple); height: 3px; }
   <div class="section">
     <div class="section-label">Historical Growth</div>
     <h2>EV registrations outpaced charger buildout</h2>
-    <p>Chicago's EV registration growth has been remarkable, a <strong>10× increase</strong> from 1,865 registered battery-electric vehicles in 2018 to 20,328 by October 2024, according to the Illinois Secretary of State's office. The charging network has not kept pace.</p>
+    <p>Chicago's EV registration growth has been remarkable with a <strong>10× increase</strong> from 1,865 registered battery-electric vehicles in 2018 to 20,328 by October 2024, according to the Illinois Secretary of State's office. However, the charging network has not kept pace.</p>
     <div class="chart-wrap">
       <div class="chart-title">EV Registrations vs. Charging Locations · Chicago 2018–2026</div>
       <div class="chart-sub">Battery-electric vehicles (left axis) vs. public charging locations (right axis)</div>
       <div class="chart-canvas-wrap" style="height:300px"><canvas id="growthChart"></canvas></div>
-      <div class="chart-source">Sources: EV registrations, IL Secretary of State via CDOT Chicago Moves Electric Framework (Oct 2024, p.30). Charging locations, AFDC (March 27 2026). Pre-2026 charger counts estimated from CDOT port-growth chart (p.30).</div>
+      <div class="chart-source">Sources: EV registrations, IL Secretary of State via CDOT Chicago Moves Electric Framework (Oct 2024, p.30). Alt. Charging locations, Chicago Data Portal (March 27 2026). Pre-2026 charger counts estimated from CDOT port-growth chart (p.30).</div>
     </div>
     <p>The divergence between the two lines tells the underlying story: as more Chicagoans buy electric vehicles, partly driven by federal tax credits that no longer exist, the infrastructure meant to support them has grown at a fraction of the pace.</p>
     <div class="chart-wrap">
@@ -717,21 +717,18 @@ input[type=range] { flex: 1; accent-color: var(--lightpurple); height: 3px; }
       <div class="chart-source">Sources: IL CEJA, ComEd Beneficial Electrification Plan, USDOT CFI grant (Sept 2024), CDOT Chicago Moves Electric Framework.</div>
     </div>
     <p>CDOT's own next steps, a curbside charging pilot, Low-Emission Zone proposals, ongoing ComEd engagement, are meaningful but incremental. None substitute for the scale of investment the federal programs would have provided.</p>
-    <div class="pullquote">
-      <p>"The City was recently awarded federal funding through the U.S. Department of Transportation's Charging & Fueling Infrastructure (CFI) program. Implementing this $15 million EV charging project will significantly expand the City's EV infrastructure deployment."</p>
-      <cite>— CDOT Chicago Moves Electric Framework, April 2025 draft, p.70</cite>
-    </div>
-    <p>That $15 million, even if fully deployed, would fund roughly 150 to 300 new charging locations, bringing the total to somewhere between 500 and 650. Still less than a quarter of the goal.</p>
-  </div>
-
-  <div class="source-box">
-    <strong>Data &amp; Methodology Notes</strong>
-    350 publicly available EV charging locations: direct AFDC Alternative Fuels Station Locator pull, all electric types (L1+L2+DCFC), March 27 2026. · 2,500-station goal: Chicago 2022 CAP, confirmed in CDOT Chicago Moves Electric Framework (April 2025 draft, p.13). · EV registrations: IL Secretary of State via CDOT framework (Oct 2024, p.30). · 7.8% EJ figure: CDOT framework (p.29, p.32), USDOT CEJST. · EVs-per-charger ratios: CDOT framework (p.31). · Federal policy: One Big Beautiful Bill Act (July 4 2025); EO 14154 (Jan 20 2025). · CDOT draft 860-station figure not used, inconsistent with government data(p.30).
-  </div>
 
 </div>
 
-<div class="footer">Chicago Climate Desk · Data compiled March 28, 2026 · All sources documented above</div>
+  <div class="source-box">
+    <strong>Data &amp; Methodology Notes</strong>
+    350 publicly available EV charging locations: direct Chicago Data Portal pull (Alt. Fuel Locations), all electric types (L1+L2+DCFC), March 27 2026. · 2,500-station goal: Chicago 2022 CAP, confirmed in CDOT Chicago Moves Electric Framework (April 2025 draft, p.13). · EV registrations: IL Secretary of State via CDOT framework (Oct 2024, p.30). · 7.8% EJ figure: CDOT framework (p.29, p.32), USDOT CEJST. · EVs-per-charger ratios: CDOT framework (p.31). · Federal policy: One Big Beautiful Bill Act (July 4 2025); EO 14154 (Jan 20 2025). · CDOT draft 860-station figure not used, inconsistent with government data(p.30).
+    <a style="color:var(--lightpurple)" href="https://docs.google.com/spreadsheets/d/18DhsK_foeq-Y-9duFvG9n1NT0Cl8LS-o8-BmLGQn-OQ/edit?gid=1055996984#gid=1055996984">Data Spreadsheet</a>
+    <p><strong>AI Use: AI was used to identify a chart js for to use for the visuals, as well as for troubleshooting with css inconsistencies since I did not create separate css files like I normally do.</strong></p>
+    </div>
+</div>
+
+<div class="footer">Data compiled March 27, 2026 · All sources documented above · For classroom purposes</div>
 
 <script>
 const VIOLET  = '#b07fff';
