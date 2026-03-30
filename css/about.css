@@ -149,3 +149,31 @@
     opacity: 70%;
 }
 
+.content-plan-box {
+    border: 1px solid var(--lightpurple);
+    background: linear-gradient(135deg, var(--bark2), var(--bark3));
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    position: relative;
+}
+.content-plan-box::before {
+    content: 'Web Building';
+    position: absolute;
+    top: -.65rem;
+    left: 1rem;
+    background: var(--bark);
+    font-family: var(--mono);
+    font-size: .58rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--lightpurple);
+    padding: 0 .5rem;
+}
+.content-plan-box p {
+    font-family: var(--body);
+    font-size: .92rem;
+    color: var(--fog);
+    line-height: 1.8;
+    margin-bottom: .8rem;
+}
+.content-plan-box p:last-child { margin-bottom: 0; }

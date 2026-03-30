@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chicago's EV Charging Gap</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bark:       #0e0c10;
+  --bark2:      #16121c;
+  --bark3:      #211a2e;
+  --moss:       #1e2e1c;
+  --violet:     #1a1428;
+  --lightblue1: #3d4a5c;
+  --lightblue2: #6b8fa8;
+  --lichen:     #9ec4a8;
+  --biolum:     #7effc4;
+  --lightpurple:#b07fff;
+  --glow-gold:  #f0c060;
+  --spore:      #c8ff6e;
+  --gold:       #e8a030;
+  --fog:        #b8b4c8;
+  --parchment:  #e8e0f0;
+  --serif:      'Cormorant Garamond', Georgia, serif;
+  --body:       'Lora', Georgia, serif;
+  --mono:       'DM Mono', monospace;
+  --rule:       #2a2040;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: .045;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+body {
+  background: var(--bark);
+  color: var(--parchment);
+  font-family: var(--body);
+  font-size: 1rem;
+  line-height: 1.8;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse   { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
+@keyframes glowPulse {
+  0%,100% { text-shadow: 0 0 8px rgba(126,255,196,.15); }
+  50%     { text-shadow: 0 0 28px rgba(126,255,196,.5), 0 0 60px rgba(126,255,196,.15); }
+}
+@keyframes borderShimmer {
+  0%,100% { border-color: rgba(176,127,255,.3); box-shadow: 0 0 0 rgba(176,127,255,0); }
+  50%     { border-color: rgba(126,255,196,.4); box-shadow: 0 0 20px rgba(126,255,196,.08); }
+}
+
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  padding: 1.2rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--violet);
+  position: relative;
+}
+.masthead::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lightpurple) 30%, var(--biolum) 60%, transparent);
+  opacity: .4;
+}
+.pub-name {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 300;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--lightpurple);
+}
+.pub-meta {
+  font-family: var(--mono);
+  font-size: .63rem;
+  color: var(--fog);
+  text-align: right;
+  line-height: 1.6;
+  opacity: .7;
+}
+
+
+.hero {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 4rem 2rem 2.5rem;
+  border-bottom: 1px solid var(--rule);
+  animation: slideUp .8s ease both;
+}
+.kicker {
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--biolum);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  opacity: .8;
+}
+.kicker::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--biolum), transparent);
+  opacity: .35;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: .01em;
+  margin-bottom: 1.3rem;
+  color: var(--parchment);
+}
+h1 em {
+  font-style: italic;
+  color: var(--lightpurple);
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+.dek {
+  font-family: var(--body);
+  font-size: 1.08rem;
+  color: var(--fog);
+  line-height: 1.75;
+  max-width: 620px;
+  margin-bottom: 1.8rem;
+}
+
+.byline {
+  font-family: var(--mono);
+  font-size: .63rem;
+  color: var(--fog);
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  opacity: .6;
+}
+.byline strong { color: var(--parchment); opacity: 1; }
+
+
+.hero-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin: 2.5rem 0;
+  overflow: hidden;
+  animation: slideUp .8s .2s ease both;
+}
+.hero-stat {
+  padding: 1.6rem 1.4rem;
+  background: var(--bark2);
+  transition: background .25s;
+  position: relative;
+  overflow: hidden;
+}
+.hero-stat::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.hero-stat:nth-child(1)::after { background: linear-gradient(90deg,transparent,var(--lightpurple),transparent); }
+.hero-stat:nth-child(2)::after { background: linear-gradient(90deg,transparent,var(--biolum),transparent); }
+.hero-stat:nth-child(3)::after { background: linear-gradient(90deg,transparent,var(--gold),transparent); }
+.hero-stat:hover { background: var(--bark3); }
+.hero-stat:hover::after { opacity: .7; }
+
+.stat-num {
+  font-family: var(--serif);
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: .4rem;
+  letter-spacing: -.01em;
+}
+.stat-num.violet { color: var(--lightpurple); }
+.stat-num.biolum { color: var(--biolum); }
+.stat-num.gold   { color: var(--gold); }
+.stat-label {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fog);
+  line-height: 1.55;
+  opacity: .75;
+}
+
+
+.body-col { max-width: 820px; margin: 0 auto; padding: 0 2rem; }
+
+.section { padding: 3.5rem 0; border-bottom: 1px solid var(--rule); }
+
+.section-label {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--lightpurple);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  opacity: .75;
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--lightpurple), transparent);
+  flex-shrink: 0;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+  color: var(--parchment);
+  letter-spacing: .01em;
+}
+
+p { margin-bottom: 1.1rem; color: var(--fog); font-family: var(--body); }
+p:last-child { margin-bottom: 0; }
+p strong { color: var(--parchment); font-weight: 500; }
+
+
+.pullquote {
+  border-left: 2px solid var(--lightpurple);
+  margin: 2.5rem 0;
+  padding: 1.2rem 1.6rem;
+  background: var(--bark3);
+  position: relative;
+}
+.pullquote::before {
+  content: '\201C';
+  font-family: var(--serif);
+  font-size: 5rem;
+  line-height: 1;
+  position: absolute;
+  top: -.5rem; left: 1rem;
+  color: var(--lightpurple);
+  opacity: .18;
+  pointer-events: none;
+}
+.pullquote p {
+  font-family: var(--serif);
+  font-size: 1.28rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--parchment);
+  margin: 0;
+  font-weight: 300;
+}
+.pullquote cite {
+  display: block;
+  font-family: var(--mono);
+  font-size: .6rem;
+  font-style: normal;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fog);
+  margin-top: .8rem;
+  opacity: .6;
+}
+
+
+.chart-wrap {
+  margin: 2rem 0;
+  background: var(--bark2);
+  border: 1px solid var(--rule);
+  padding: 1.6rem;
+  position: relative;
+}
+.chart-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lightpurple), transparent);
+  opacity: .25;
+}
+.chart-title {
+  font-family: var(--mono);
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--biolum);
+  margin-bottom: .3rem;
+  opacity: .85;
+}
+.chart-sub {
+  font-family: var(--body);
+  font-size: .8rem;
+  color: var(--fog);
+  margin-bottom: 1.4rem;
+  opacity: .65;
+}
+.chart-canvas-wrap { position: relative; width: 100%; }
+.chart-source {
+  font-family: var(--mono);
+  font-size: .58rem;
+  color: var(--fog);
+  margin-top: .9rem;
+  line-height: 1.55;
+  opacity: .5;
+}
+
+
+.progress-section { margin: 2rem 0; }
+.progress-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: .5rem;
+}
+.progress-label-row span {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fog);
+  opacity: .75;
+}
+.progress-label-row .pct {
+  font-family: var(--mono);
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--lightpurple);
+  opacity: 1;
+}
+.progress-track {
+  height: 5px;
+  background: var(--bark3);
+  border: 1px solid var(--rule);
+  position: relative;
+  overflow: visible;
+}
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--lightpurple);
+  transition: width 1.6s cubic-bezier(.16,1,.3,1);
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -1px; top: -4px;
+  width: 2px; height: 13px;
+  background: var(--biolum);
+  box-shadow: 0 0 8px var(--biolum);
+}
+.progress-meta {
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--fog);
+  margin-top: .5rem;
+  opacity: .55;
+}
+
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .87rem;
+  margin: 1.5rem 0;
+  font-family: var(--body);
+}
+.compare-table th {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fog);
+  border-bottom: 1px solid var(--lightpurple);
+  padding: .7rem .8rem;
+  text-align: left;
+  background: var(--bark2);
+  opacity: .8;
+}
+.compare-table td {
+  padding: .7rem .8rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+  color: var(--fog);
+}
+.compare-table tr:nth-child(even) td { background: rgba(255,255,255,.018); }
+.compare-table tr.highlight td { background: rgba(176,127,255,.07); color: var(--parchment); font-weight: 500; }
+.compare-table .worse  { color: var(--gold);   font-weight: 500; }
+.compare-table .better { color: var(--lichen);  font-weight: 500; }
+
+
+.timeline { margin: 2rem 0; }
+.tl-item {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.6rem;
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity .5s, transform .5s;
+}
+.tl-item.visible { opacity: 1; transform: none; }
+.tl-year {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 500;
+  color: var(--biolum);
+  padding-top: .1rem;
+  text-align: right;
+  padding-right: 1rem;
+  border-right: 1px solid var(--rule);
+  position: relative;
+}
+.tl-year::after {
+  content: '';
+  position: absolute;
+  right: -3px; top: .35rem;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--biolum);
+  box-shadow: 0 0 8px var(--biolum);
+}
+.tl-year.future { color: var(--fog); opacity: .45; }
+.tl-year.future::after { background: var(--fog); box-shadow: none; opacity: .4; }
+.tl-content { font-family: var(--body); font-size: .9rem; color: var(--fog); line-height: 1.65; }
+.tl-content strong { color: var(--parchment); }
+
+.scenario-box {
+  background: var(--violet);
+  border: 1px solid rgba(176,127,255,.3);
+  padding: 2rem;
+  margin: 2rem 0;
+  animation: borderShimmer 6s ease-in-out infinite;
+}
+.scenario-box h3 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: .3rem;
+  color: var(--parchment);
+  letter-spacing: .02em;
+}
+.scenario-box .sub { font-family: var(--body); font-size: .8rem; color: var(--fog); margin-bottom: 1.8rem; opacity: .65; }
+.slider-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.1rem; }
+.slider-row label {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--fog);
+  min-width: 140px;
+  opacity: .75;
+}
+input[type=range] { flex: 1; accent-color: var(--lightpurple); height: 3px; }
+.slider-val { font-family: var(--mono); font-size: .78rem; color: var(--biolum); min-width: 50px; text-align: right; }
+.scenario-result {
+  border-top: 1px solid var(--rule);
+  padding-top: 1.4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.sr-label { font-family: var(--mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fog); margin-bottom: .3rem; opacity: .65; }
+.sr-value { font-family: var(--serif); font-size: 2rem; font-weight: 600; color: var(--parchment); }
+.sr-value.warn { color: var(--gold); }
+.sr-value.ok   { color: var(--lichen); }
+
+.dot-grid { display: flex; flex-wrap: wrap; gap: 4px; margin: 1rem 0; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--bark3); border: 1px solid var(--rule); }
+.dot.ej         { background: var(--lightblue1); border-color: var(--lightblue2); }
+.dot.ej-charger { background: var(--lightpurple); border-color: var(--lightpurple); box-shadow: 0 0 5px rgba(176,127,255,.55); }
+.dot-legend { display: flex; gap: 1.5rem; flex-wrap: wrap; font-family: var(--mono); font-size: .6rem; color: var(--fog); margin-top: .6rem; opacity: .75; }
+.dot-legend span { display: flex; align-items: center; gap: .4rem; }
+.dot-legend .swatch { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+.source-box {
+  background: var(--bark2);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--lightpurple);
+  padding: 1.2rem 1.4rem;
+  margin: 2rem 0;
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--fog);
+  line-height: 1.85;
+  opacity: .65;
+}
+.source-box strong {
+  color: var(--parchment);
+  display: block;
+  margin-bottom: .4rem;
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.footer {
+  border-top: 1px solid var(--rule);
+  padding: 2rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--fog);
+  margin-top: 3rem;
+  opacity: .4;
+  background: var(--violet);
+}
+
+@media (max-width: 600px) {
+  .hero-stat-row { grid-template-columns: 1fr; }
+  .scenario-result { grid-template-columns: 1fr; }
+  .tl-item { grid-template-columns: 60px 1fr; }
+  .masthead { flex-direction: column; align-items: flex-start; }
+  h1 { font-size: 2.2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="kicker">EV Infrastructure · Investigative Data</div>
+  <h1>Chicago promised 2,500 charging stations four years ago.<br>Today, it has <em>350.</em></h1>
+  <p class="dek">Nine years out from its own deadline, the city has built 14% of the EV charging network its Climate Action Plan requires, and federal funding that was supposed to close the gap is now gone.</p>
+  <div class="byline">
+    <span><strong>Data:</strong> AFDC Alt. Fuels Station Locator, March 27 2026</span>
+    <span><strong>Goal:</strong> Chicago 2022 Climate Action Plan</span>
+  </div>
+  <div class="hero-stat-row">
+    <div class="hero-stat">
+      <div class="stat-num violet">350</div>
+      <div class="stat-label">Public EV charging<br>locations today</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num biolum">2,500</div>
+      <div class="stat-label">CAP goal by<br>2035</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num gold">2,150</div>
+      <div class="stat-label">Stations still<br>needed</div>
+    </div>
+  </div>
+</div>
+
+<div class="body-col">
+
+  <div class="section">
+    <div class="section-label">The Gap</div>
+    <h2>A 14% progress rate with 9 years left</h2>
+    <p>When Chicago released its 2022 Climate Action Plan, the city committed to enabling <strong>2,500 new public passenger EV charging stations by 2035</strong>. At the time, the Inflation Reduction Act was about to pass, electric vehicle adoption was accelerating nationally, and the goal seemed ambitious but achievable.</p>
+    <p>As of March 27, 2026, the city has <strong>350 publicly available electric charging locations</strong>, counting every Level 1, Level 2, and DC Fast Charger on the AFDC database. That is 14% of the target, with roughly 9 years remaining.</p>
+    <div class="progress-section">
+      <div class="progress-label-row">
+        <span>Progress toward 2,500-station goal</span>
+        <span class="pct">350 / 2,500</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="main-progress"></div>
+      </div>
+      <div class="progress-meta">14% complete · 2,150 stations short · Deadline: 2035</div>
+    </div>
+    <p>To hit the target on time, Chicago would need to add approximately <strong>239 new charging locations every year</strong> from now through 2035. In the six years since the CAP was drafted, the city has averaged far less than that.</p>
+    <div class="pullquote">
+      <p>"Chicago has a lower number of chargers per vehicle than the country, state, and County."</p>
+      <cite>— CDOT Chicago Moves Electric Framework, April 2025 draft, p.31</cite>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Historical Growth</div>
+    <h2>EV registrations outpaced charger buildout</h2>
+    <p>Chicago's EV registration growth has been remarkable, a <strong>10× increase</strong> from 1,865 registered battery-electric vehicles in 2018 to 20,328 by October 2024, according to the Illinois Secretary of State's office. The charging network has not kept pace.</p>
+    <div class="chart-wrap">
+      <div class="chart-title">EV Registrations vs. Charging Locations · Chicago 2018–2026</div>
+      <div class="chart-sub">Battery-electric vehicles (left axis) vs. public charging locations (right axis)</div>
+      <div class="chart-canvas-wrap" style="height:300px"><canvas id="growthChart"></canvas></div>
+      <div class="chart-source">Sources: EV registrations, IL Secretary of State via CDOT Chicago Moves Electric Framework (Oct 2024, p.30). Charging locations, AFDC (March 27 2026). Pre-2026 charger counts estimated from CDOT port-growth chart (p.30).</div>
+    </div>
+    <p>The divergence between the two lines tells the underlying story: as more Chicagoans buy electric vehicles, partly driven by federal tax credits that no longer exist, the infrastructure meant to support them has grown at a fraction of the pace.</p>
+    <div class="chart-wrap">
+      <div class="chart-title">Chicago vs. Peer Geographies · EVs per Charger</div>
+      <div class="chart-sub">A higher ratio means fewer chargers per vehicle, worse access</div>
+      <table class="compare-table">
+        <thead><tr><th>Geography</th><th>EVs as % of registered</th><th>EV chargers per capita</th><th>EVs per charger</th></tr></thead>
+        <tbody>
+          <tr><td>United States</td><td>1.4%</td><td>0.17</td><td class="better">1 : 25</td></tr>
+          <tr><td>Illinois</td><td>1.4%</td><td>0.098</td><td>1 : 22</td></tr>
+          <tr><td>Cook County</td><td>1.52%</td><td>0.12</td><td>1 : 39</td></tr>
+          <tr class="highlight"><td><strong>Chicago</strong></td><td>1.54%</td><td>0.12</td><td class="worse">1 : 47</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-source">Source: CDOT Chicago Moves Electric Framework, April 2025 draft, p.31. Data as of October 2024.</div>
+    </div>
+    <p>Despite having the highest share of registered EVs among the geographies compared, Chicago has the worst charger-to-vehicle ratio, <strong>1 charger for every 47 EVs</strong>, versus the national average of 1 for every 25.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Equity Gap</div>
+    <h2>7.8% of chargers are in environmental justice neighborhoods</h2>
+    <p>The distribution problem is not just one of quantity. Only <strong>7.8% of the city's charging stations</strong> sit in EJ-designated neighborhoods, the communities that bear the heaviest burden of air pollution and have the most to gain from EV infrastructure.</p>
+    <div class="chart-wrap">
+      <div class="chart-title">Where are Chicago's EV Chargers?</div>
+      <div class="chart-sub">Each dot represents approximately 1% of Chicago's census tracts or charging stations</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1rem;">
+        <div>
+          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fog);margin-bottom:.6rem;opacity:.65;">Chicago neighborhoods</div>
+          <div class="dot-grid" id="hood-dots"></div>
+          <div style="font-family:var(--mono);font-size:.68rem;margin-top:.6rem;color:var(--parchment);">~40% are EJ-designated</div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fog);margin-bottom:.6rem;opacity:.65;">EV charger locations</div>
+          <div class="dot-grid" id="charger-dots"></div>
+          <div style="font-family:var(--mono);font-size:.68rem;margin-top:.6rem;color:var(--lightpurple);">Only 7.8% in EJ areas</div>
+        </div>
+      </div>
+      <div class="dot-legend">
+        <span><span class="swatch" style="background:var(--bark3);border:1px solid var(--rule);"></span>Non-EJ area</span>
+        <span><span class="swatch" style="background:var(--lightblue1);border:1px solid var(--lightblue2)"></span>EJ-designated</span>
+        <span><span class="swatch" style="background:var(--lightpurple);box-shadow:0 0 5px rgba(176,127,255,.5)"></span>Charger in EJ area</span>
+      </div>
+      <div class="chart-source">Source: CDOT Chicago Moves Electric Framework, April 2025 draft, p.29 and p.32. EJ designation per USDOT CEJST.</div>
+    </div>
+    <p>The highest concentration of EV chargers remains in downtown Chicago and the North Side. The South and West Sides, where residents are most likely to rely on street parking and where air quality is worst, have the fewest options.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Federal Policy Shock</div>
+    <h2>The credits that were supposed to close the gap are gone</h2>
+    <p>The 2023 IRA Addendum to Chicago's CAP estimated that federal programs would help close the charging gap. That analysis is now obsolete. The One Big Beautiful Bill Act, signed July 4 2025, eliminated the primary federal mechanisms supporting EV charging expansion.</p>
+    <div class="timeline" id="timeline">
+      <div class="tl-item"><div class="tl-year">Apr 2022</div><div class="tl-content"><strong>Chicago CAP published.</strong> Commits to 2,500 new public EV charging stations by 2035. Federal credits are core to the funding strategy.</div></div>
+      <div class="tl-item"><div class="tl-year">Aug 2022</div><div class="tl-content"><strong>IRA signed.</strong> 30C EV charger tax credit activated (up to 30% of installation cost). NEVI Formula Program allocates $148M to Illinois for charging corridors.</div></div>
+      <div class="tl-item"><div class="tl-year">Sep 2024</div><div class="tl-content"><strong>$15M federal grant awarded.</strong> USDOT CFI grant approved for Chicago, targeting libraries, Midway Airport, transit hubs.</div></div>
+      <div class="tl-item"><div class="tl-year">Jan 2025</div><div class="tl-content"><strong>EO 14154, funding freeze.</strong> Trump administration freezes all IRA and IIJA disbursements. NEVI halted. $15M grant implementation at risk.</div></div>
+      <div class="tl-item"><div class="tl-year">Jul 2025</div><div class="tl-content"><strong>One Big Beautiful Bill signed.</strong> Permanently terminates 30C EV charging tax credit (after June 30 2026), $7,500 consumer EV credit (30D), and $4,000 used EV credit (25E).</div></div>
+      <div class="tl-item"><div class="tl-year future">By the end of 2026</div><div class="tl-content"><strong>30C credit expires.</strong> Final deadline for charger installations to qualify. After this, no federal subsidy for public EV charging infrastructure exists.</div></div>
+      <div class="tl-item"><div class="tl-year future">2035</div><div class="tl-content"><strong>CAP deadline.</strong> At current pace, Chicago would reach approximately <strong>500–600 locations</strong>, roughly 20–24% of the 2,500-station goal.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Interactive</div>
+    <h2>What would it take to hit the goal?</h2>
+    <p>Adjust the annual installation rate and start year to explore when, or whether, Chicago could reach 2,500 stations under different scenarios.</p>
+    <div class="scenario-box">
+      <h3>Buildout Scenario Calculator</h3>
+      <p class="sub">Drag the sliders to model different futures</p>
+      <div class="slider-row">
+        <label>New stations / year</label>
+        <input type="range" id="sl-rate" min="20" max="400" value="50" step="10">
+        <span class="slider-val" id="sv-rate">50</span>
+      </div>
+      <div class="slider-row">
+        <label>Starting year</label>
+        <input type="range" id="sl-year" min="2026" max="2030" value="2026" step="1">
+        <span class="slider-val" id="sv-year">2026</span>
+      </div>
+      <div class="scenario-result">
+        <div><div class="sr-label">Year goal reached</div><div class="sr-value" id="sr-year">—</div></div>
+        <div><div class="sr-label">Stations by 2035</div><div class="sr-value" id="sr-2035">—</div></div>
+        <div><div class="sr-label">Years behind schedule</div><div class="sr-value" id="sr-behind">—</div></div>
+        <div><div class="sr-label">% of goal by 2035</div><div class="sr-value" id="sr-pct">—</div></div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Projected Charging Locations · Selected Scenario</div>
+      <div class="chart-sub">Dashed lines show low (25/yr) and high (120/yr) bounding scenarios</div>
+      <div class="chart-canvas-wrap" style="height:260px"><canvas id="projChart"></canvas></div>
+      <div class="chart-source">Projections are illustrative. Actual growth depends on private investment, utility capacity, permitting, and state funding.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What Remains</div>
+    <h2>State programs remain, but they're smaller</h2>
+    <p>The loss of federal 30C credits does not mean all funding is gone. Illinois CEJA, ComEd's beneficial electrification programs, and the $15M federal CFI grant provide a floor, but a lower one.</p>
+    <div class="chart-wrap">
+      <div class="chart-title">Remaining Funding Levers for Chicago EV Expansion</div>
+      <div class="chart-sub">Estimated Chicago-relevant value, $M</div>
+      <div class="chart-canvas-wrap" style="height:220px"><canvas id="fundingChart"></canvas></div>
+      <div class="chart-source">Sources: IL CEJA, ComEd Beneficial Electrification Plan, USDOT CFI grant (Sept 2024), CDOT Chicago Moves Electric Framework.</div>
+    </div>
+    <p>CDOT's own next steps, a curbside charging pilot, Low-Emission Zone proposals, ongoing ComEd engagement, are meaningful but incremental. None substitute for the scale of investment the federal programs would have provided.</p>
+    <div class="pullquote">
+      <p>"The City was recently awarded federal funding through the U.S. Department of Transportation's Charging & Fueling Infrastructure (CFI) program. Implementing this $15 million EV charging project will significantly expand the City's EV infrastructure deployment."</p>
+      <cite>— CDOT Chicago Moves Electric Framework, April 2025 draft, p.70</cite>
+    </div>
+    <p>That $15 million, even if fully deployed, would fund roughly 150 to 300 new charging locations, bringing the total to somewhere between 500 and 650. Still less than a quarter of the goal.</p>
+  </div>
+
+  <div class="source-box">
+    <strong>Data &amp; Methodology Notes</strong>
+    350 publicly available EV charging locations: direct AFDC Alternative Fuels Station Locator pull, all electric types (L1+L2+DCFC), March 27 2026. · 2,500-station goal: Chicago 2022 CAP, confirmed in CDOT Chicago Moves Electric Framework (April 2025 draft, p.13). · EV registrations: IL Secretary of State via CDOT framework (Oct 2024, p.30). · 7.8% EJ figure: CDOT framework (p.29, p.32), USDOT CEJST. · EVs-per-charger ratios: CDOT framework (p.31). · Federal policy: One Big Beautiful Bill Act (July 4 2025); EO 14154 (Jan 20 2025). · CDOT draft 860-station figure not used, inconsistent with government data(p.30).
+  </div>
+
+</div>
+
+<div class="footer">Chicago Climate Desk · Data compiled March 28, 2026 · All sources documented above</div>
+
+<script>
+const VIOLET  = '#b07fff';
+const BIOLUM  = '#7effc4';
+const GOLD    = '#e8a030';
+const FOG     = '#b8b4c8';
+const RULE    = '#2a2040';
+const BLUE1   = '#3d4a5c';
+const LICHEN  = '#9ec4a8';
+const MONO    = "'DM Mono', monospace";
+
+function buildDots(id, total, hi, cls) {
+  const el = document.getElementById(id);
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < hi ? ' '+cls : '');
+    el.appendChild(d);
+  }
+}
+buildDots('hood-dots',    100, 40, 'ej');
+buildDots('charger-dots', 100,  8, 'ej-charger');
+
+setTimeout(() => { document.getElementById('main-progress').style.width = '14%'; }, 500);
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i*90); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.tl-item').forEach(el => obs.observe(el));
+
+Chart.defaults.color = FOG;
+Chart.defaults.borderColor = RULE;
+Chart.defaults.font.family = MONO;
+
+new Chart(document.getElementById('growthChart'), {
+  data: {
+    labels: ['2018','2019','2020','2021','2022','2023','2024','Mar 2026'],
+    datasets: [
+      { type:'line', label:'Registered BEVs',
+        data:[1865,3095,4297,6179,9373,15453,20328,22000],
+        borderColor:BIOLUM, backgroundColor:BIOLUM+'14', borderWidth:2,
+        pointRadius:4, pointBackgroundColor:BIOLUM, fill:true, tension:0.35, yAxisID:'y' },
+      { type:'bar', label:'Public EV charging locations',
+        data:[null,null,null,null,null,null,null,350],
+        backgroundColor:VIOLET+'bb', borderColor:VIOLET, borderWidth:1, yAxisID:'y2' },
+      { type:'line', label:'Charging locations (trend)',
+        data:[95,115,150,190,240,290,330,350],
+        borderColor:VIOLET, borderDash:[4,3], borderWidth:1.5,
+        pointRadius:3, pointBackgroundColor:VIOLET, fill:false, tension:0.3, yAxisID:'y2' }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins: {
+      legend:{ display:true, labels:{ font:{family:MONO,size:10}, color:FOG, boxWidth:14, boxHeight:2, padding:14, filter:i=>i.datasetIndex!==1 } },
+      tooltip:{ backgroundColor:'#211a2e', borderColor:RULE, borderWidth:1 }
+    },
+    scales:{
+      x:{ ticks:{color:FOG,font:{size:10}}, grid:{color:RULE} },
+      y:{ position:'left', title:{display:true,text:'Registered BEVs',color:BIOLUM,font:{size:10}}, ticks:{color:BIOLUM,font:{size:10}}, grid:{color:RULE+'60'} },
+      y2:{ position:'right', title:{display:true,text:'Charging locations',color:VIOLET,font:{size:10}}, ticks:{color:VIOLET,font:{size:10}}, grid:{display:false}, max:700 }
+    }
+  }
+});
+
+let projChart;
+function buildProjChart(rate, startYear) {
+  let cur = 350;
+  const labels=[], proj=[], pess=[], opt=[];
+  for (let y=2026;y<=2040;y++) {
+    labels.push(String(y));
+    if (y===2026) { proj.push(350); pess.push(350); opt.push(350); }
+    else { cur += y>=startYear?rate:30; proj.push(Math.min(cur,3200)); pess.push(Math.min(350+(y-2026)*25,3200)); opt.push(Math.min(350+(y-2026)*120,3200)); }
+  }
+  const data = { labels, datasets:[
+    { label:'Goal (2,500 by 2035)', data:labels.map(l=>+l<=2035?2500:null), borderColor:LICHEN, borderWidth:1.5, borderDash:[6,4], pointRadius:0, fill:false },
+    { label:'Your scenario', data:proj, borderColor:BIOLUM, backgroundColor:BIOLUM+'18', borderWidth:2.5, pointRadius:3, fill:true, tension:0.2 },
+    { label:'Low (25/yr)', data:pess, borderColor:FOG, borderWidth:1, borderDash:[3,3], pointRadius:0, fill:false },
+    { label:'High (120/yr)', data:opt, borderColor:GOLD, borderWidth:1, borderDash:[3,3], pointRadius:0, fill:false }
+  ]};
+  if (projChart) { projChart.data=data; projChart.update('none'); return; }
+  projChart = new Chart(document.getElementById('projChart'), {
+    type:'line', data,
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:true,labels:{font:{family:MONO,size:10},color:FOG,boxWidth:20,boxHeight:2,padding:12}}, tooltip:{backgroundColor:'#211a2e',borderColor:RULE,borderWidth:1} },
+      scales:{ x:{ticks:{color:FOG,font:{size:10}},grid:{color:RULE}}, y:{max:3000,ticks:{color:FOG,font:{size:10}},grid:{color:RULE}} }
+    }
+  });
+}
+
+function updateScenario() {
+  const rate=parseInt(document.getElementById('sl-rate').value);
+  const startYear=parseInt(document.getElementById('sl-year').value);
+  document.getElementById('sv-rate').textContent=rate;
+  document.getElementById('sv-year').textContent=startYear;
+  let stations=350, goalYear=null;
+  for (let y=2026;y<=2060;y++) { if (y>=startYear) stations+=rate; if (stations>=2500&&!goalYear) goalYear=y; }
+  const by2035=Math.min(350+Math.max(0,2035-startYear+1)*rate,3000);
+  const pct=Math.round((by2035/2500)*100);
+  const behind=goalYear?Math.max(0,goalYear-2035):'∞';
+  const set=(id,val,ok)=>{ const el=document.getElementById(id); el.textContent=val; el.className='sr-value'+(ok===true?' ok':ok===false?' warn':''); };
+  set('sr-year',  goalYear?goalYear:'Never',           goalYear&&goalYear<=2035);
+  set('sr-2035',  Math.round(by2035).toLocaleString(), by2035>=2500);
+  set('sr-behind',typeof behind==='number'?(behind===0?'On time':behind+' yrs'):'∞', behind===0);
+  set('sr-pct',   pct+'%',                             pct>=100);
+  buildProjChart(rate, startYear);
+}
+document.getElementById('sl-rate').addEventListener('input', updateScenario);
+document.getElementById('sl-year').addEventListener('input', updateScenario);
+updateScenario();
+
+new Chart(document.getElementById('fundingChart'), {
+  type:'bar',
+  data:{
+    labels:['USDOT CFI\ngrant (2024)','ComEd EV\nrebates','IL CEJA\nprograms','Federal 30C\ncredit (GONE)','Federal NEVI\n(uncertain)'],
+    datasets:[{ label:'Est. Chicago-relevant value ($M)', data:[15,20,30,0,12],
+      backgroundColor:[BIOLUM+'44',BIOLUM+'44',BIOLUM+'44',RULE,FOG+'22'],
+      borderColor:[BIOLUM,BIOLUM,BIOLUM,GOLD,FOG],
+      borderWidth:[1,1,1,2,1] }]
+  },
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{backgroundColor:'#211a2e',borderColor:RULE,borderWidth:1,callbacks:{label:ctx=>` $${ctx.raw}M est. Chicago-relevant value`}} },
+    scales:{ x:{ticks:{color:FOG,font:{size:10},maxRotation:0},grid:{display:false}}, y:{title:{display:true,text:'$ millions (estimated)',color:FOG,font:{size:10}},ticks:{color:FOG,font:{size:10}},grid:{color:RULE}} }
+  }
+});
+</script>
+</body>
+</html>

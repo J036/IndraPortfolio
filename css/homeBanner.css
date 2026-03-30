@@ -1,5 +1,8 @@
 
-
+html, body {
+    margin: 0;
+    padding: 0;
+}
 .banner {
     position: relative;
     min-height: 100vh;
@@ -63,6 +66,7 @@
     display: flex;
     gap: 1.5rem;
     font-size: .7 rem;
+    flex-wrap: wrap;
     letter-spacing: .14em;
     text-transform: uppercase;
 }

@@ -368,7 +368,24 @@
         </div>
 		</div>
     </div>
-
+    <div class="content-plan-box" aria-label="Portfolio content plan">
+      <strong style="color:var(--parchment); font-family:var(--mono); font-size:.65rem; letter-spacing:.14em; text-transform:uppercase;">Portfolio Content Plan</strong>
+      <p>
+          I'm primarily interested environmental data journalism, community-based research, and policy communication, especially in regards to public health. Since my studies encompass many different practices, I am particularly interested newsrooms with dedicated environmental
+          desks, non-profit research organizations focused on Indigenous sovereignty, and public health 
+          teams that center equity. I am also exploring graduate programs in environmental
+          science and public policy as a path toward research leadership.
+        </p>
+        <p>
+          The goal of this portfolio is to demonstrate that I can move fluently between quantitative
+          data analysis, community-centered fieldwork, and narrative storytelling, and that I can do so
+          with methodological rigor and ethical care. I want this site to show editors and research directors
+          about the considerations I make when creating sharing knowledge from thinking about who data belongs to, 	to who gets harmed by its absence to what it means to work with communities rather than report on them.
+        </p>
+        <p>
+          To support these goals, this portfolio includes environmental justice stories I've written ; references to my researcher statement that was grounded in Indigenous methodological frameworks; and documentation of my work with the Medill Investigative Lab and Indigenous STEAM. Together these pieces demonstrate both the craft and the ethical framework. I bring to data journalism.
+        </p>
+    </div>
 </section>
 
 <!-- Something really weird happened with my identation spacing and I tried fixing it for 30 minuetes; I was unsuccesful -->
@@ -408,7 +425,30 @@
    	</a>
 	</div> 
 
-	</section>
+</section>
+
+<footer class="footer">
+  <span class="footer-name">Jai Varun Indra</span>
+  <span>Investigative Data Journalist &amp; Community-Based Researcher · Northwestern University · Class of 2027</span>
+</footer>
+
+<script>
+  /* Triggers fade in for js elements*/
+  const workItems = document.querySelectorAll('.work-item');
+
+  const workObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+  });
+  }, { threshold: 0.1 });
+
+  workItems.forEach(el => workObserver.observe(el));
+  /* End of js for fade in*/
+
+
+</script>
 
 </body>
 </html>
