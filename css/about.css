@@ -1,5 +1,12 @@
 /* About section css (styling) */
 
+/* Grid for about section*/
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+}
+
+
 /* Quote box */
 .quote {
     position: relative;
