@@ -1,0 +1,154 @@
+/* About section css (styling) */
+
+/* Quote box */
+.quote {
+    position: relative;
+    margin: 2.5rem 0;
+    padding: 1.8rem 2rem 1.8rem 2.8rem;
+    border-left: 2px solid var(--violet);
+    background: linear-gradient(135deg, var(--bark2), var(--bark3));
+}
+
+/* Quote icon */
+.quote::before {
+    content: '"';
+    position: absolute; top: -.4rem; left: 1rem;
+    font-family: var(--serif); font-size: 4.5rem; line-height: 1;
+    color: var(--lightpurple); opacity: .35;
+}
+.quote p {
+    font-family: var(--serif); font-size: 1.25rem;
+    font-style: italic; font-weight: 300; line-height: 1.5;
+    margin: 0;
+}
+.quote cite {
+    display: block; font-family: var(--mono); font-size: .62rem;
+    font-style: normal; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--lightpurple); margin-top: .7rem;
+}
+
+/* Profile picture styling */
+/* pfp container */
+.profile-photo {
+  max-width: 220px; 
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* pfp image styling */
+.profile-photo img {
+  display: block;
+  width: 220px;
+  height: 220px;
+  aspect-ratio: 1 / 1; 
+  object-fit: cover; 
+  object-position: center top;
+  border-radius: 50%;
+  border: 2px solid var(--bark3); 
+  box-shadow:
+    0 0 0 3px var(--lightpurple), 
+    0 0 20px rgba(176,127,255,.35), 
+    0 0 40px rgba(176,127,255,.15); 
+  filter: saturate(0.85) brightness(0.92); 
+  transition: box-shadow .4s, filter .4s; 
+}
+
+.profile-photo img:hover {
+  box-shadow:
+    0 0 0 3px var(--biolum),
+    0 0 24px rgba(126,255,196,.4),
+    0 0 48px rgba(126,255,196,.2); 
+  filter: saturate(1) brightness(1); 
+}
+
+
+.photo-name { 
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--parchment);
+  margin-top: .9rem;
+}
+
+.photo-role {
+  font-family: var(--mono); 
+  font-size: .7em;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--lightpurple); 
+  margin-top: .25rem;
+  line-height: 1.6;
+}
+
+.photo-pronouns { 
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .1em;
+  color: var(--fern);
+  margin-top: .2rem;
+}
+
+.photo-credits {
+    font-family: var(--mono);
+    font-size:.58em;
+    color: var(--fog);
+    font-weight: bold;
+    opacity: 70%;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .profile-photo {
+    max-width: 180px;
+  }
+
+  .photo-name {
+    font-size: 0.95rem;
+  }
+
+  .photo-role {
+    font-size: 0.55rem;
+  }
+
+  .photo-pronouns {
+    font-size: 0.52rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .profile-photo {
+    max-width: 140px;
+  }
+
+  .profile-photo::before {
+    inset: -8px; 
+  }
+
+  .profile-photo::after {
+    inset: -14px;
+  }
+
+  .profile-photo img {
+    box-shadow:
+      0 0 0 2px var(--violet),
+      0 0 14px rgba(176,127,255,.3),
+      0 0 28px rgba(176,127,255,.12);
+  }
+
+  .photo-name {
+    font-size: 0.9rem;
+    margin-top: 0.7rem;
+  }
+
+  .photo-role {
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .photo-pronouns {
+    font-size: 0.48rem;
+  }
+}
