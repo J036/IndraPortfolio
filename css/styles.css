@@ -3,6 +3,8 @@
 @import "scrollPrompt.css";
 @import "contactBoxes.css";
 @import "index.css";
+@import "work.css";
+@import "about.css";
 
 /* Night-Vale-themed purple and black with a forest background color scheme*/
 :root {
@@ -49,6 +51,11 @@ body {
     overflow-x: hidden;
     cursor: crosshair;
 }
+
+/* Animations */
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse   { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
 
 /* Moving Banner css */
 
