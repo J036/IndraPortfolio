@@ -274,17 +274,109 @@
         Selected Work
     </div>
 
-    <h2 class="section-title" id="work-title">Some of my projects <em>(2022⁠–2026)</em></h2>
+    <h2 class="section-title" id="work-title">Some of my projects <em>(2022⁠–2025)</em></h2>
+<div class="work-list" role="list">
+  <div class="work-item" role="listitem">
+    <div class="work-meta">
+      <span class="work-year">2024–2025</span>
+      <span class="work-org">Indigenous STEAM /<br>Northwestern</span>
+    </div>
+    <a class="work-link work-body" href="https://indigenoussteam.org/" target="_blank" rel="noopener" aria-label="Visit Indigenous STEAM — opens in new tab">
+      <div class="work-category">Research · Indigenous Education</div>
+      <div class="work-title">Land and Water-Based Education: Data Collection for Indigenous STEAM Programs</div>
+      <p class="work-desc">Collaborated with Indigenous researchers and community partners to collect and analyze data on culturally grounded educational and environmental initiatives. Conducted transcription, data coding, and research design centered on community well-being, environmental stewardship, and Indigenous knowledge systems. Applied OCAP and CARE principles for Indigenous data governance throughout.</p>
+      <div class="work-tags">
+        <span class="work-tag">Community Research</span>
+        <span class="work-tag">IRB Protocols</span>
+        <span class="work-tag">Qualitative Coding</span>
+        <span class="work-tag">CARE Principles</span>
+        <span class="work-tag">OCAP</span>
+      </div>
+      <span class="work-readmore">Visit Indigenous STEAM ↗</span>
+      </a>
+    </div>
+  </div>
+
+    <div class="work-item" role="listitem">
+    <div class="work-meta">
+      <span class="work-year">2023</span>
+      <span class="work-org">Medill Investigative<br>Lab</span>
+    </div>
+    <a class="work-link work-body" href="works/lead-in-our-pipes.html" target="_blank" rel="noopener" aria-label="Visit Indigenous STEAM — opens in new tab">
+      <div class="work-category">Environmental Justice · Chicago</div>
+      <div class="work-title">The Poison in Our Pipes: Lead Service Lines Remain in Chicago’s Most Vulnerable Communities</div>
+      <p class="work-desc">Conducted investigative reporting on social and environmental issues impacting Chicago-area communities. Utilized data analysis and field interviews to uncover systemic inequities. Made data analyses accessible to the public through GIS mapping and interactive graphics built in ArcGIS and Datawrapper.</p>
+      <div class="work-tags">
+        <span class="work-tag">Datawrapper</span>
+        <span class="work-tag">Field Interviews</span>
+        <span class="work-tag">Scientific Paper + Journal Reviews</span>
+      </div>
+      <span class="work-readmore">View Article ↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="work-item" role="listitem">
+    <div class="work-meta">
+      <span class="work-year">2022–2023</span>
+      <span class="work-org">Northwestern<br>University Library</span>
+    </div>
+    <a class="work-link work-body" href="https://www.library.northwestern.edu" target="_blank" rel="noopener" aria-label="Visit Northwestern University Library — opens in new tab">
+      <div class="work-category">Digital Curation · Archival</div>
+      <div class="work-title">Digital Preservation of Historical Collections and Chicago Transit Authority Records</div>
+      <p class="work-desc">Digitized a Google book collection dating to the 1700s for online public access. Created digital access to hundreds of Chicago Transit Authority documents, studies, and reports. Contributed as an editor for a national preservation guide in partnership with the Library of Congress.</p>
+      <div class="work-tags">
+        <span class="work-tag">Digital Archiving</span>
+        <span class="work-tag">Library of Congress</span>
+        <span class="work-tag">Metadata</span>
+        <span class="work-tag">Preservation</span>
+      </div>
+      <span class="work-readmore">Visit Northwestern Libraries ↗</span>
+      </a>
+    </div>
+  </div>
+
+  </div>
 
 </section>
 
-<section class="section" id="story" aria-labelledby="about-title">
+<section class="section" id="data-example" aria-labelledby="data-example">
     <div class="section-mini-title">
         <span class="dot" aria-hidden="true"></span>
-        Story
+        Data Example
     </div>
 
-    <h2 class="section-title" id="about-title">Place <em>holder</em></h2>
+    <h2 class="section-title" id="data-example">Progress <em>chart</em></h2>
+      <div class="chart-wrap">
+    <div class="chart-title">Progress toward goal · all metrics</div>
+    <div class="chart-sub">% of [blank] reached as of March 2026</div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="legend-swatch" style="background:#9ec4a8"></span>On track ≥ 75%</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:#b07fff"></span>In progress 25–74%</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:#e8a030"></span>Behind 10–24%</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:#c8440a"></span>Critical &lt; 10%</div>
+      <div class="legend-item"><span class="legend-dash"></span>Goal (100%)</div>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="mainChart"></canvas>
+    </div>
+
+    <div class="chart-source">
+      Sources: [blank]
+    </div>
+  </div>
+
+  <div class="section-label">Breakdown by goal</div>
+
+  <div class="bar-section">
+    <div class="chart-title" style="margin-bottom:1.4rem;">Individual goal progress bars</div>
+
+    <div id="bar-rows"></div>
+  </div>
+
+  <div class="source-box">
 
 </section>
 
@@ -446,8 +538,16 @@
 
   workItems.forEach(el => workObserver.observe(el));
   /* End of js for fade in*/
+  /* Svg Scroll animation */
+  const canopySvg = document.querySelector('.canopy-svg');
 
-
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    // Only parallax while hero is visible
+    if (canopySvg && scrolled < window.innerHeight) {
+      canopySvg.style.transform = `translateY(${scrolled * 0.12}px)`;
+    }
+  }, { passive: true });
 </script>
 
 </body>

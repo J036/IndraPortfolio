@@ -156,6 +156,7 @@
     margin: 2rem 0;
     position: relative;
 }
+
 .content-plan-box::before {
     content: 'Web Building';
     position: absolute;
@@ -169,6 +170,7 @@
     color: var(--lightpurple);
     padding: 0 .5rem;
 }
+
 .content-plan-box p {
     font-family: var(--body);
     font-size: .92rem;
@@ -176,4 +178,7 @@
     line-height: 1.8;
     margin-bottom: .8rem;
 }
-.content-plan-box p:last-child { margin-bottom: 0; }
+
+.content-plan-box p:last-child {
+    margin-bottom: 0;
+}

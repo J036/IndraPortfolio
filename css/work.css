@@ -113,8 +113,8 @@
     text-transform: uppercase;
     padding: .18rem .55rem;
     background: var(--bark3);
-    color: var(--lightblue1);
-    border: 1px solid var(--lightblue2);
+    color: var(--lightblue2);
+    border: 1px solid var(--lightblue1);
 }
 
 @media (max-width: 600px) {
@@ -122,12 +122,14 @@
         grid-template-columns: 1fr;
     }
     .work-meta {
-        border-right: none;
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 1.5rem 0 0;
+        align-items: flex-start;
+        text-align: left;
+    }
+    .work-org {
+        text-align: left;
     }
     .work-body {
         padding: .5rem 0 1.5rem;
     }
+    
 }
