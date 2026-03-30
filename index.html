@@ -23,6 +23,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 	<!--Calls in cumulative style sheet-->
 	<link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
 
 <body>
@@ -255,7 +256,7 @@
 
     <p>
 		Covering environmental justice, education, and public health equity through investigative reporting, GIS mapping, and community-based research.
-		Indigenous STEAM & Northwestern Class of 2027. Previous Medill Investigative Lab & KnightLab Member.
+		Indigenous STEAM & Northwestern Class of 2027. Previous Medill Investigative Lab & Knight Lab Member.
     </p>
         
 
@@ -372,11 +373,21 @@
 
   <div class="bar-section">
     <div class="chart-title" style="margin-bottom:1.4rem;">Individual goal progress bars</div>
-
     <div id="bar-rows"></div>
   </div>
 
   <div class="source-box">
+    One skill I learned in this class was how to build a flexible, data-driven chart using Chart.js. 
+    In my example, you can hover over any bar to see the raw data appear in a tooltip. The chart is 
+    set up using two simple arrays (current and goals), and the percentages are calculated 
+    dynamically instead of being hardcoded. That means if I want to reuse it, I can just swap in new 
+    data and labels, and everything else updates automatically.<br>
+    I also learned how to extend Chart.js with a custom plugin. Instead of adding the 100% goal line 
+    as another dataset, I used the afterDraw lifecycle to draw it directly on the canvas. 
+    Using ctx.setLineDash, I created a dashed vertical line positioned exactly at the 100% mark on 
+    the x-axis. This approach keeps the chart cleaner and avoids interfering with tooltips or the 
+    legend.
+  </div>
 
 </section>
 
@@ -548,6 +559,154 @@
       canopySvg.style.transform = `translateY(${scrolled * 0.12}px)`;
     }
   }, { passive: true });
+const GOALS = [
+  { label: '[blank]',  current: 300,   goal: 2300,  unit: 'locations' },
+  { label: '[blank]', current: 182,   goal: 800,   unit: 'vehicles'  },
+  { label: '[blank]',    current: 1240,  goal: 4000,  unit: 'buildings' },
+  { label: '[blank]',  current: 87,    goal: 200,   unit: 'miles'     },
+  { label: '[blank]',   current: 2800,  goal: 5000,  unit: 'units'     },
+  { label: '[blank]',     current: 7600,  goal: 10000, unit: 'acres'     },
+];
+
+const VIOLET   = '#b07fff';
+const BIOLUM   = '#7effc4';
+const GOLD     = '#e8a030';
+const LICHEN   = '#9ec4a8';
+const CORAL    = '#c8440a';
+const FOG      = '#b8b4c8';
+const RULE     = '#2a2040';
+const BARK2    = '#16121c';
+const MONO     = "'DM Mono', monospace";
+
+function pct(c, g) { return Math.round((c / g) * 100); }
+
+function tierColor(p) {
+  if (p >= 75) return LICHEN;
+  if (p >= 25) return VIOLET;
+  if (p >= 10) return GOLD;
+  return CORAL;
+}
+function tierClass(p) {
+  if (p >= 75) return 'tier-on-track';
+  if (p >= 25) return 'tier-progress';
+  if (p >= 10) return 'tier-behind';
+  return 'tier-critical';
+}
+
+const pcts  = GOALS.map(g => pct(g.current, g.goal));
+const colors = pcts.map(tierColor);
+const labels = GOALS.map(g => g.label);
+
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+const goalLinePlugin = {
+  id: 'goalLine',
+  afterDraw(chart) {
+    const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+    const xPos = x.getPixelForValue(100);
+    ctx.save();
+    ctx.setLineDash([5, 4]);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = FOG;
+    ctx.globalAlpha = .3;
+    ctx.beginPath();
+    ctx.moveTo(xPos, top);
+    ctx.lineTo(xPos, bottom);
+    ctx.stroke();
+    ctx.restore();
+  }
+};
+
+new Chart(document.getElementById('mainChart'), {
+  type: 'bar',
+  plugins: [goalLinePlugin],
+  data: {
+    labels,
+    datasets: [{
+      label: '% of goal',
+      data: pcts,
+      backgroundColor: colors,
+      borderColor: colors,
+      borderWidth: 0,
+      borderRadius: 3,
+      barThickness: 28,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#211a2e',
+        borderColor: RULE,
+        borderWidth: 1,
+        titleColor: '#e8e0f0',
+        bodyColor: FOG,
+        padding: 12,
+        titleFont: { family: MONO, size: 11 },
+        bodyFont: { family: MONO, size: 11 },
+        callbacks: {
+          title: ctx => ctx[0].label,
+          label: ctx => {
+            const i = ctx.dataIndex;
+            const g = GOALS[i];
+            return [
+              `Progress: ${pcts[i]}% of goal`,
+              `Current:  ${g.current.toLocaleString()} ${g.unit}`,
+              `Goal:     ${g.goal.toLocaleString()} ${g.unit}`,
+            ];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        min: 0,
+        max: 110,
+        grid: { color: RULE },
+        border: { display: false },
+        ticks: {
+          color: FOG,
+          font: { size: 11, family: MONO },
+          callback: v => v <= 100 ? v + '%' : ''
+        }
+      },
+      y: {
+        grid: { display: false },
+        border: { display: false },
+        ticks: {
+          color: '#e8e0f0',
+          font: { size: 12, family: "'Lora', Georgia, serif" },
+          padding: 6
+        }
+      }
+    }
+  }
+});
+
+const container = document.getElementById('bar-rows');
+GOALS.forEach((g, i) => {
+  const p = pcts[i];
+  const tc = tierClass(p);
+  const delay = (i * 0.1).toFixed(1) + 's';
+  const targetW = Math.min(p, 100) + '%';
+
+  const row = document.createElement('div');
+  row.className = 'bar-row';
+  row.innerHTML = `
+    <div class="bar-label">${g.label}</div>
+    <div class="bar-track">
+      <div class="bar-fill ${tc}" style="--target-w:${targetW}; --delay:${delay}; width:${targetW}"></div>
+      <div class="goal-marker" style="left:calc(100% * 100/110)"></div>
+    </div>
+    <div class="bar-pct ${tc}">${p}%</div>
+  `;
+  container.appendChild(row);
+});
+
+
 </script>
 
 </body>
